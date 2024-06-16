@@ -1,1 +1,1 @@
-String openweathermapAPI = "YOUR_API_KEY";
+String openweathermapAPI = "YOUR-API-KEY";
