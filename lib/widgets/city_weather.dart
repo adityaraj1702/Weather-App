@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/data/account.dart';
 import 'package:weather_app/data/city_list.dart';
+import 'package:weather_app/model/userdata_modal.dart';
+import 'package:weather_app/screens/detailed_weather_screen.dart';
 
 class CityWeatherCard extends StatefulWidget {
-  const CityWeatherCard({super.key});
+  final data;
+  const CityWeatherCard({super.key, this.data});
 
   @override
   State<CityWeatherCard> createState() => _CityWeatherCardState();
 }
 
 class _CityWeatherCardState extends State<CityWeatherCard> {
+  String tempUnit = "";
+  String windSpeedUnit = "";
+  void _loadData() {
+    AccountStorage().getUserData().then((userData) {
+      setState(() {
+        tempUnit = userData.tempUnit;
+        windSpeedUnit = userData.windSpeedUnit;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     double ht = MediaQuery.of(context).size.height;
@@ -27,11 +48,13 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  citylist.cities[citylist.selectedIndex].tempC!,
+                  tempUnit == "°C"
+                      ? citylist.cities[citylist.selectedIndex].tempC!
+                      : citylist.cities[citylist.selectedIndex].tempF!,
                   style: const TextStyle(fontSize: 100),
                 ),
-                const Text(
-                  "°C",
+                Text(
+                  tempUnit,
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -69,7 +92,9 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "${citylist.cities[citylist.selectedIndex].feelslike!} °C",
+                          tempUnit == "°C"
+                              ? "${citylist.cities[citylist.selectedIndex].feelslikeC!} °C"
+                              : "${citylist.cities[citylist.selectedIndex].feelslikeF!} °F",
                           style: const TextStyle(fontSize: 20),
                         ),
                       ],
@@ -123,7 +148,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "${citylist.cities[citylist.selectedIndex].windSpeedKph!} km/h",
+                          windSpeedUnit=="kmph"?"${citylist.cities[citylist.selectedIndex].windSpeedKph!} kmph":"${citylist.cities[citylist.selectedIndex].windSpeedMph!} mph",
                           style: const TextStyle(fontSize: 20),
                         ),
                       ],
@@ -136,12 +161,19 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
               width: 400,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailedWeatherScreen(cityIndex: citylist.selectedIndex,data: widget.data,),
+                    ),
+                  );
+                },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(Colors.red[100]!),
                 ),
                 child: const Text(
-                  "5-day forecast",
+                  "Detailed Weather Report",
                   style: TextStyle(fontSize: 20),
                 ),
               ),

@@ -10,7 +10,8 @@ class CityData {
   String? maxtempF;
   String? mintempF;
   String? avgtempF;
-  String? feelslike;
+  String? feelslikeC;
+  String? feelslikeF;
   String? localtime;
   String? weatherCondition;
   String? windSpeedKph;
@@ -31,7 +32,8 @@ class CityData {
       this.maxtempF,
       this.mintempF,
       this.avgtempF,
-      this.feelslike,
+      this.feelslikeC,
+      this.feelslikeF,
       this.localtime,
       this.weatherCondition,
       this.windSpeedKph,
@@ -52,7 +54,8 @@ class CityData {
     maxtempF = json['maxtemp_f'];
     mintempF = json['mintemp_f'];
     avgtempF = json['avgtemp_f'];
-    feelslike = json['feelslike'];
+    feelslikeC = json['feelslike_c'];
+    feelslikeF = json['feelslike_f'];
     localtime = json['localtime'];
     weatherCondition = json['weatherCondition'];
     windSpeedKph = json['windSpeed_kph'];
@@ -75,7 +78,8 @@ class CityData {
     data['maxtemp_f'] = maxtempF;
     data['mintemp_f'] = mintempF;
     data['avgtemp_f'] = avgtempF;
-    data['feelslike'] = feelslike;
+    data['feelslike_c'] = feelslikeC;
+    data['feelslike_f'] = feelslikeF;
     data['localtime'] = localtime;
     data['weatherCondition'] = weatherCondition;
     data['windSpeed_kph'] = windSpeedKph;

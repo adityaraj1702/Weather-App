@@ -30,9 +30,9 @@ class AccountStorage {
   Future<UserData> getUserData() async {
     final username = await getStringData(_keyUsername) ?? 'User';
     final email = await getStringData(_keyEmail) ?? 'user@gmail.com';
-    final tempUnit = await getStringData(_keyTempUnit) ?? 'C';
-    final windSpeedUnit = await getStringData(_keyWindSpeedUnit) ?? 'km/h';
-    final themeMode = await getStringData(_keyThemeMode) ?? 'default';
+    final tempUnit = await getStringData(_keyTempUnit) ?? '°C';
+    final windSpeedUnit = await getStringData(_keyWindSpeedUnit) ?? 'kmph';
+    final themeMode = await getStringData(_keyThemeMode) ?? 'System';
     return UserData(username, email, tempUnit, windSpeedUnit, themeMode);
   }
 }

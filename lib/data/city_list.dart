@@ -3,11 +3,11 @@ import 'package:weather_app/model/citydata_model.dart';
 
 class CityListProvider extends ChangeNotifier{
 
-  final List<CityData> cities = [
+  List<CityData> cities = [
     CityData(
       city: "Ranchi(Default)",
-      lat: "23.344",
-      lon: "85.307",
+      lat: "23.35",
+      lon: "85.33",
       tempC: "38",
       maxtempC: "40",
       mintempC: "35",
@@ -16,8 +16,9 @@ class CityListProvider extends ChangeNotifier{
       maxtempF: "40",
       mintempF: "35",
       avgtempF: "38",
-      feelslike: "38",
-      localtime: "11:00 PM",
+      feelslikeC: "38",
+      feelslikeF: "92",
+      localtime: "2024-06-19 15:12",
       weatherCondition: "Clear",
       windSpeedKph: "28 Km/h",
       windSpeedMph: "28 Km/h",
@@ -26,7 +27,6 @@ class CityListProvider extends ChangeNotifier{
       chanceofrain: "50",
     ),
   ];
-
 
   int selectedIndex = 0;
   void changeIndex(int index){

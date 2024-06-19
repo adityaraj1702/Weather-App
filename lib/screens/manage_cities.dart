@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/city_list.dart';
+import 'package:weather_app/data/local_storage_city.dart';
 import 'package:weather_app/model/citydata_model.dart';
 import 'package:weather_app/model/weather_service.dart';
 import 'package:weather_app/screens/search_city_screen.dart';
@@ -57,7 +58,8 @@ class ManageCityScreen extends StatelessWidget {
                       avgtempF: data['forecast']['forecastday'][0]['day']
                               ['avgtemp_f']
                           .toString(),
-                      feelslike: data['current']['feelslike_c'].toString(),
+                      feelslikeC: data['current']['feelslike_c'].toString(),
+                      feelslikeF: data['current']['feelslike_f'].toString(),
                       localtime: data['location']['localtime'].toString(),
                       weatherCondition:
                           data['current']['condition']['text'].toString(),
@@ -74,6 +76,13 @@ class ManageCityScreen extends StatelessWidget {
                       listen: false,
                     ).addCity(newCity);
                     print("added the new city");
+                    CityStorage().saveCityList(Provider.of<CityListProvider>(
+                      context,
+                      listen: false,
+                    ).cities.map((e) => "${e.lat}:${e.lon}").toList()); // Save the city list to shared preferences
+                    print("saved the city list to local storage");
+                    List<String> city=await CityStorage().getCityList();
+                    print(city);
                   }
                 },
                 icon: const Icon(Icons.search),

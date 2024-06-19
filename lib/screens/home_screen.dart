@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/city_list.dart';
+import 'package:weather_app/data/local_storage_city.dart';
 import 'package:weather_app/model/citydata_model.dart';
 import 'package:weather_app/model/weather_service.dart';
 import 'package:weather_app/model/weathermodel.dart';
@@ -15,7 +16,8 @@ import 'package:weather_app/utlis/utlis_functions.dart';
 import 'package:weather_app/widgets/city_weather.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final data;
+  const HomeScreen({super.key, this.data});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -31,12 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
     print("current position: $currPos");
     var data = await weatherService.fetchWeatherData(currPos.latitude.toString(), currPos.longitude.toString());
     print(data);
-    CityListProvider cityListProvider = Provider.of<CityListProvider>(
-      context,
-      listen: false,
-    );
     CityData cityData = CityData(
       city: data['location']['name'].toString(),
+      lat: data['location']['lat'].toString(),
+      lon: data['location']['lon'].toString(),
       tempC: data['current']['temp_c'].toString(),
       maxtempC: data['forecast']['forecastday'][0]['day']['maxtemp_c'].toString(),
       mintempC: data['forecast']['forecastday'][0]['day']['mintemp_c'].toString(),
@@ -45,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
       maxtempF: data['forecast']['forecastday'][0]['day']['maxtemp_f'].toString(),
       mintempF: data['forecast']['forecastday'][0]['day']['mintemp_f'].toString(),
       avgtempF: data['forecast']['forecastday'][0]['day']['avgtemp_f'].toString(),
-      feelslike: data['current']['feelslike_c'].toString(),
+      feelslikeC: data['current']['feelslike_c'].toString(),
+      feelslikeF: data['current']['feelslike_f'].toString(),
       localtime: data['location']['localtime'].toString(),
       weatherCondition: data['current']['condition']['text'].toString(),
       windSpeedKph: data['current']['wind_kph'].toString(),
@@ -55,13 +56,22 @@ class _HomeScreenState extends State<HomeScreen> {
       chanceofrain: data['forecast']['forecastday'][0]['day']
               ['daily_chance_of_rain'].toString(),
     );
+    CityListProvider cityListProvider = Provider.of<CityListProvider>(
+      context,
+      listen: false,
+    );
 
     cityListProvider.changeCityatIndex(cityData, 0);
+    CityStorage().saveCityList(cityListProvider.cities.map((e) => "${e.lat}:${e.lon}").toList());
+    CityStorage()
+        .getCityList()
+        .then((value) => print("Citylist during getcurrentWeather: $value"));
   }
 
+  
   @override
   void initState() {
-    getcurrentWeather();
+    // getcurrentWeather();
     super.initState();
   }
 
@@ -109,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: cityProviderModel.cities.length,
                       index: cityProviderModel.selectedIndex,
                       itemBuilder: (BuildContext context, int index) {
-                        return const CityWeatherCard();
+                        return CityWeatherCard(data: widget.data,);
                       },
                       onIndexChanged: (index) {
                         cityProviderModel.changeIndex(index);
