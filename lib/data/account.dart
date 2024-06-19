@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/model/user_modal.dart';
+import 'package:weather_app/model/userdata_modal.dart';
 
 class AccountStorage {
   static const _keyUsername = 'username';

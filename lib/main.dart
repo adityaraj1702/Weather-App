@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/city_list.dart';
 import 'package:weather_app/screens/home_screen.dart';
 import 'package:weather_app/screens/splash_screen.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=>CityListProvider()),
+        ChangeNotifierProvider(create: (context) => CityListProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

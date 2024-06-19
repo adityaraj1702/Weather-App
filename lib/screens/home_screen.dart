@@ -4,11 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/city_list.dart';
+import 'package:weather_app/model/citydata_model.dart';
 import 'package:weather_app/model/weather_service.dart';
 import 'package:weather_app/model/weathermodel.dart';
+import 'package:weather_app/screens/account_setting_screen.dart';
 import 'package:weather_app/screens/manage_cities.dart';
 import 'package:weather_app/utlis/colors.dart';
 import 'package:weather_app/utlis/constants.dart';
+import 'package:weather_app/utlis/utlis_functions.dart';
 import 'package:weather_app/widgets/city_weather.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,44 +22,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Position? _currentPosition;
-  WeatherModel? weatherModel;
+  MyFucntions func = MyFucntions();
+  Position? currentPosition;
 
-  Future<void> _getCurrentLocation() async {
-    bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!isServiceEnabled) {
-      // Location services are not enabled
-      await Geolocator.requestPermission();
-      return;
-    }
-    LocationPermission locationPermission = await Geolocator.checkPermission();
-    if (locationPermission == LocationPermission.denied ||
-        locationPermission == LocationPermission.deniedForever) {
-      locationPermission = await Geolocator.requestPermission();
-      // if (locationPermission == LocationPermission.deniedForever) {
-      //   // Permissions are denied forever, handle appropriately.
-      //   return;
-      // }
-    }
-    // If permissions are granted or location service is already enabled
-    _currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-  }
-
-  Future<void> _getWeather() async {
+  void getcurrentWeather() async {
     WeatherService weatherService = WeatherService();
-    weatherModel = await weatherService.fetchWeatherData(_currentPosition!);
-    print(weatherModel!.name.toString());
+    Position currPos = await func.getCurrentLocation();
+    print("current position: $currPos");
+    var data = await weatherService.fetchWeatherData(currPos.latitude.toString(), currPos.longitude.toString());
+    print(data);
+    CityListProvider cityListProvider = Provider.of<CityListProvider>(
+      context,
+      listen: false,
+    );
+    CityData cityData = CityData(
+      city: data['location']['name'].toString(),
+      tempC: data['current']['temp_c'].toString(),
+      maxtempC: data['forecast']['forecastday'][0]['day']['maxtemp_c'].toString(),
+      mintempC: data['forecast']['forecastday'][0]['day']['mintemp_c'].toString(),
+      avgtempC: data['forecast']['forecastday'][0]['day']['avgtemp_c'].toString(),
+      tempF: data['current']['temp_f'].toString(),
+      maxtempF: data['forecast']['forecastday'][0]['day']['maxtemp_f'].toString(),
+      mintempF: data['forecast']['forecastday'][0]['day']['mintemp_f'].toString(),
+      avgtempF: data['forecast']['forecastday'][0]['day']['avgtemp_f'].toString(),
+      feelslike: data['current']['feelslike_c'].toString(),
+      localtime: data['location']['localtime'].toString(),
+      weatherCondition: data['current']['condition']['text'].toString(),
+      windSpeedKph: data['current']['wind_kph'].toString(),
+      windSpeedMph: data['current']['wind_mph'].toString(),
+      humidity: data['current']['humidity'].toString(),
+      aqi: data['current']['air_quality']['pm2_5'].toString(),
+      chanceofrain: data['forecast']['forecastday'][0]['day']
+              ['daily_chance_of_rain'].toString(),
+    );
+
+    cityListProvider.changeCityatIndex(cityData, 0);
   }
 
   @override
   void initState() {
-    // _getCurrentLocation();
-    _getWeather();
+    getcurrentWeather();
     super.initState();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       Text(cityProviderModel
-                          .cities[cityProviderModel.selectedIndex]),
+                          .cities[cityProviderModel.selectedIndex].city!),
                       IconButton(
                         icon: const Icon(Icons.account_circle_outlined),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AccountSettingScreen()),
+                          );
+                        },
                       ),
                     ],
                   ),
