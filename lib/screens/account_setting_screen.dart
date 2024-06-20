@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/data/account.dart';
 import 'package:weather_app/data/city_list.dart';
 import 'package:weather_app/data/local_storage_city.dart';
+import 'package:weather_app/utlis/colors.dart';
 import 'package:weather_app/widgets/dropdownlist_widget.dart';
 
 class AccountSettingScreen extends StatefulWidget {
@@ -18,10 +19,10 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
   // String _homelocation = "";
   List<String> temperatureUnits = ["°C", "°F"];
   List<String> windSpeedUnits = ["kmph", "mph"];
-  List<String> themesList = ["System", "Light", "Dark"];
+  List<Color> themes = [splash_bgColortop,splash_bgColorbottom];
+  Color textColor = Colors.black;
   int tempUnitIndex = 0;
   int windSpeedUnitIndex = 0;
-  int themeIndex = 0;
 
   void _loadData() {
     AccountStorage().getUserData().then((userData) {
@@ -34,7 +35,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
     });
   }
   void _saveData() {
-    AccountStorage().saveUserData(_username,_email,temperatureUnits[tempUnitIndex],windSpeedUnits[windSpeedUnitIndex],themesList[themeIndex]);
+    AccountStorage().saveUserData(_username,_email,temperatureUnits[tempUnitIndex],windSpeedUnits[windSpeedUnitIndex]);
   }
 
   String greetUser(String localtime) {
@@ -94,14 +95,23 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
   Widget build(BuildContext context) {
     double ht = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: splash_bgColortop,
       appBar: AppBar(
         title: const Text(
           "Account Settings",
           style: TextStyle(fontSize: 24.0), // Adjusted font size for title
         ),
+        backgroundColor: splash_bgColortop,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [themes[0], themes[1]],
+          ),
+        ),
         child: Consumer<CityListProvider>(
           builder: (context, cityListProvider, child) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,11 +136,11 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                     children: [
                       Text(
                         "${greetUser(cityListProvider.cities[0].localtime!)}, ",
-                        style: const TextStyle(fontSize: 27.0),
+                        style: TextStyle(fontSize: 27.0,color: textColor), // Adjusted font size and color
                       ),
                       Text(
                         "$_username!",
-                        style: const TextStyle(fontSize: 27.0),
+                        style: TextStyle(fontSize: 27.0,color: textColor),
                       ),
                     ],
                   ),
@@ -155,13 +165,14 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                 children: [
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         "Email: ",
                         style:
-                            TextStyle(fontSize: 30.0), // Adjusted email label size
+                            TextStyle(fontSize: 30.0,
+                            color: textColor), // Adjusted email label size
                       ),
                       Text(_email,
-                        style: const TextStyle(fontSize: 25.0),
+                        style: TextStyle(fontSize: 25.0,color: textColor),
                       ),
                     ],
                   ),
@@ -211,12 +222,12 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
               //         icon: const Icon(Icons.edit)),
               //   ],
               // ),
-              const Row(
+              Row(
                 children: [
                   Text(
                     "Settings ",
                     style: TextStyle(
-                        fontSize: 30.0), // Adjusted settings label size
+                        fontSize: 30.0,color: textColor), // Adjusted settings label size
                   ),
                   Icon(Icons.settings),
                 ],
@@ -231,18 +242,18 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                   ),
                 ],
               ),
-              const Text(
+              Text(
                 "UNITS",
                 style: TextStyle(
-                  fontSize: 27.0, // Adjusted UNITS label size
+                  fontSize: 27.0, color: textColor,
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "Temperature unit: ",
-                    style: TextStyle(fontSize: 24.0), // Adjusted label size
+                    style: TextStyle(fontSize: 24.0,color: textColor), // Adjusted label size
                   ),
                   Row(
                     children: [
@@ -268,9 +279,9 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "Wind Speed unit: ",
-                    style: TextStyle(fontSize: 24.0), // Adjusted label size
+                    style: TextStyle(fontSize: 24.0,color: textColor), // Adjusted label size
                   ),
                   Row(
                     children: [
@@ -293,40 +304,41 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                   ),
                 ],
               ),
-              const Text(
-                "OTHER SETTINGS",
-                style: TextStyle(
-                  fontSize: 27.0,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Theme",
-                    style: TextStyle(fontSize: 24.0),
-                  ),
-                  Row(
-                    children: [
-                      Text(themesList[themeIndex]),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      DropDownListWidget(
-                        items: themesList,
-                        onItemSelected: (index) {
-                          setState(
-                            () {
-                              themeIndex = index;
-                              _saveData();
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              // Text(
+              //   "OTHER SETTINGS",
+              //   style: TextStyle(
+              //     fontSize: 27.0,
+              //     color: textColor,
+              //   ),
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "Theme",
+              //       style: TextStyle(fontSize: 24.0, color: textColor),
+              //     ),
+              //     Row(
+              //       children: [
+              //         Text(themesList[themeIndex]),
+              //         const SizedBox(
+              //           width: 10,
+              //         ),
+              //         DropDownListWidget(
+              //           items: themesList,
+              //           onItemSelected: (index) {
+              //             setState(
+              //               () {
+              //                 themeIndex = index;
+              //                 _saveData();
+              //               },
+              //             );
+              //           },
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

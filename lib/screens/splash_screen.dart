@@ -4,6 +4,7 @@ import 'package:weather_app/data/city_list.dart';
 import 'package:weather_app/data/local_storage_city.dart';
 import 'package:weather_app/model/citydata_model.dart';
 import 'package:weather_app/model/weather_service.dart';
+import 'package:weather_app/model/weathermodel.dart';
 import 'package:weather_app/utlis/colors.dart';
 import 'package:weather_app/utlis/constants.dart';
 import 'package:weather_app/screens/home_screen.dart';
@@ -16,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Future<dynamic> checkCityStorage() async {
+  Future<List<dynamic>> checkCityStorage() async {
     List<String> cityList = await CityStorage().getCityList();
     CityListProvider cityListProvider = Provider.of<CityListProvider>(
       context,
@@ -27,6 +28,10 @@ class _SplashScreenState extends State<SplashScreen> {
         "${cityListProvider.cities[0].lat}:${cityListProvider.cities[0].lon}"
       ]);
     }
+    // WeatherDataProvider weatherDataProvider = Provider.of<WeatherDataProvider>(
+    //   context,
+    //   listen: false,
+    // );
     List<dynamic> data = [];
     for (int i = 0; i < cityList.length; i++) {
       WeatherService weatherService = WeatherService();

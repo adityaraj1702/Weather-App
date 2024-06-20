@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/utlis/constants.dart';
 
 class HourlyWeatherWidget extends StatelessWidget {
   final int cityIndex;
-  final List data;
+  final List<dynamic> data;
   final String hour;
   final int itemIndex;
   final String tempUnit;
@@ -12,11 +13,11 @@ class HourlyWeatherWidget extends StatelessWidget {
   const HourlyWeatherWidget({
     super.key,
     required this.cityIndex,
-    required this.data,
     required this.hour,
     required this.tempUnit,
     required this.windSpeedUnit,
     required this.itemIndex,
+    required this.data,
   });
 
   @override
@@ -32,7 +33,7 @@ class HourlyWeatherWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: const Color.fromARGB(255, 52, 164, 255),
         borderRadius: BorderRadius.circular(10),
       ),
       child: itemIndex == 0
