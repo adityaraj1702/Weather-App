@@ -19,7 +19,9 @@ This is a basic weather app built with Flutter that retrieves and displays weath
 1. Clone this repository.
 2. Open the project in your preferred IDE.
 3. Install the required dependencies using `flutter pub get`.
-4. Run the app on your desired platform using `flutter run`.
+4. Get the api key from [Weather Api](https://www.weatherapi.com/)
+5. Make .env file and wtite API_KEY=YOUR-API_KEY
+6. Run the app on your desired platform using `flutter run`.
 
 ## Screenshots
 ![Splash Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/splashScreen.png)
