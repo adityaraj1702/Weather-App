@@ -23,21 +23,24 @@ This is a basic weather app built with Flutter that retrieves and displays weath
 
 ## Screenshots
 ![Splash Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/splashScreen.png)
-![Home Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/homeScreen.png)
-![Detailed Weather Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/detailedWeather.png)
-![ManageCity Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/managecities.png)
-![Search City Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/searchcity.png)
-![Account Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/splashScreen.png)
-
-
 - **Splash Screen** - The initial screen displayed when the app launches.
+![Home Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/homeScreen.png)
 - **Home Screen** - The main screen displaying weather information for configured cities.
+![Detailed Weather Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/detailedWeather.png)
+- **Detailed Weather Screen** - The detailed weather screen displaying all weather information for configured cities.
+![ManageCity Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/managecities.png)
+- **ManageCity Screen** - The manage city screen displaying all configured cities and the option to add or delete cities.
+![Search City Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/searchcity.png)
+- **Search City Screen** - The search city screen displaying a list of cities based on the search query.
+![Account Screen](https://github.com/adityaraj1702/Weather-App/blob/main/assets/images/splashScreen.png)
+- **Account Screen** - The account screen displaying the user data that can be edited and is saved in the local storage. Also user can modify the units of measurement.
+
 
 ## Video Demo
 
 A placeholder link to a video demo is included. You'll need to replace it with a link showcasing your app's functionality.
 
-[Link to video demo](https://example.com/weather-app-demo.mp4)
+[Link to video demo](https://github.com/adityaraj1702/Weather-App/blob/main/assets/demoVideo/demoVideo.mp4)
 
 ## Project Structure
 
