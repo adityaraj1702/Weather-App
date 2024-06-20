@@ -11,7 +11,7 @@ import 'package:weather_app/model/citydata_model.dart';
 import 'package:weather_app/model/weather_service.dart';
 import 'package:weather_app/model/weathermodel.dart';
 import 'package:weather_app/screens/account_setting_screen.dart';
-import 'package:weather_app/screens/manage_cities.dart';
+import 'package:weather_app/screens/manage_cities_screen.dart';
 import 'package:weather_app/utlis/colors.dart';
 import 'package:weather_app/utlis/constants.dart';
 import 'package:weather_app/utlis/utlis_functions.dart';
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 icon: const Icon(Icons.add),
                                 color: bgColordark2,
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>

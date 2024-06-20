@@ -60,10 +60,10 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
     final result = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit $labelText'),
+        title: Text(labelText),
         content: TextField(
           controller: _textController,
-          decoration: InputDecoration(hintText: 'Enter your $labelText'),
+          decoration: InputDecoration(hintText: labelText),
         ),
         actions: [
           TextButton(
@@ -134,13 +134,14 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                 children: [
                   Row(
                     children: [
+                      const SizedBox(height: 30,),
                       Text(
                         "${greetUser(cityListProvider.cities[0].localtime!)}, ",
-                        style: TextStyle(fontSize: 27.0,color: textColor), // Adjusted font size and color
+                        style: TextStyle(fontSize: 25.0,color: textColor), // Adjusted font size and color
                       ),
                       Text(
                         "$_username!",
-                        style: TextStyle(fontSize: 27.0,color: textColor),
+                        style: TextStyle(fontSize: 25.0,color: textColor),
                       ),
                     ],
                   ),
@@ -168,11 +169,11 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                       Text(
                         "Email: ",
                         style:
-                            TextStyle(fontSize: 30.0,
+                            TextStyle(fontSize: 27.0,
                             color: textColor), // Adjusted email label size
                       ),
                       Text(_email,
-                        style: TextStyle(fontSize: 25.0,color: textColor),
+                        style: TextStyle(fontSize: 22.0,color: textColor),
                       ),
                     ],
                   ),
@@ -222,6 +223,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
               //         icon: const Icon(Icons.edit)),
               //   ],
               // ),
+              const SizedBox(height: 30,),
               Row(
                 children: [
                   Text(
