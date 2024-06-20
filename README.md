@@ -42,6 +42,9 @@ A placeholder link to a video demo is included. You'll need to replace it with a
 
 [Link to video demo](https://github.com/adityaraj1702/Weather-App/blob/main/assets/demoVideo/demoVideo.mp4)
 
+## Built
+[APK build](https://drive.google.com/drive/folders/1mVww_DiIR6A0XRt-QuJzGj80eGn73vjk?usp=sharing)
+
 ## Project Structure
 
 The project is organized with a well-defined directory structure for maintainability:
@@ -52,6 +55,13 @@ The project is organized with a well-defined directory structure for maintainabi
   - `screens`: Contains the splash screen and home screen widgets.
   - `utils`: Utility functions and constants.
 - `pubspec.yaml`: Defines project dependencies and configurations.
+
+## Bugs
+There are some bugs in the app that I have yet to fix.
+The bugs are as follows:
+  - The app sometimes crashes after adding a new city.
+  - The app does not show the weather data for the newly added city.
+For above bugs user needs to restart the app and the bugs will be fixed.
 
 ## Contributing
 
