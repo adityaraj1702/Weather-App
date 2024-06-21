@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/account.dart';
 import 'package:weather_app/data/city_list.dart';
-import 'package:weather_app/data/local_storage_city.dart';
 import 'package:weather_app/utlis/colors.dart';
 import 'package:weather_app/widgets/dropdownlist_widget.dart';
 
@@ -93,7 +92,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double ht = MediaQuery.of(context).size.height;
+    double wt = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: splash_bgColortop,
       appBar: AppBar(
@@ -129,36 +128,47 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: wt-20,
+                    child: Text(
+                      "${greetUser(cityListProvider.cities[0].localtime!)}, ",
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: textColor),
+                          textAlign: TextAlign.start, // Adjusted font size and color
+                    ),
+                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(height: 30,),
-                      Text(
-                        "${greetUser(cityListProvider.cities[0].localtime!)}, ",
-                        style: TextStyle(fontSize: 25.0,color: textColor), // Adjusted font size and color
-                      ),
                       Text(
                         "$_username!",
                         style: TextStyle(fontSize: 25.0,color: textColor),
                       ),
+                      IconButton(
+                        onPressed: () {
+                          _showEditTextFieldDialog(
+                                  context, "Enter your Name", _username)
+                              .then((value) {
+                            if (value != null) {
+                              setState(() {
+                                _username = value;
+                                _saveData();
+                              });
+                            }
+                          });
+                        },
+                        icon: const Icon(Icons.edit),
+                      ),
                     ],
                   ),
-                  IconButton(
-                      onPressed: () {
-                        _showEditTextFieldDialog(
-                                context, "Enter your Name", _username)
-                            .then((value) {
-                          if (value != null) {
-                            setState(() {
-                              _username = value;
-                              _saveData();
-                            });
-                          }
-                        });
-                      },
-                      icon: const Icon(Icons.edit)),
+                  
                 ],
               ),
               Row(
@@ -169,7 +179,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                       Text(
                         "Email: ",
                         style:
-                            TextStyle(fontSize: 27.0,
+                            TextStyle(fontSize: 25.0,
                             color: textColor), // Adjusted email label size
                       ),
                       Text(_email,

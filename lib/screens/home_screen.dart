@@ -1,15 +1,13 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/data/account.dart';
+import 'package:weather_app/data/city_data_list_provider.dart';
 import 'package:weather_app/data/city_list.dart';
 import 'package:weather_app/data/local_storage_city.dart';
 import 'package:weather_app/model/citydata_model.dart';
 import 'package:weather_app/model/weather_service.dart';
-import 'package:weather_app/model/weathermodel.dart';
 import 'package:weather_app/screens/account_setting_screen.dart';
 import 'package:weather_app/screens/manage_cities_screen.dart';
 import 'package:weather_app/utlis/colors.dart';
@@ -18,8 +16,7 @@ import 'package:weather_app/utlis/utlis_functions.dart';
 import 'package:weather_app/widgets/city_weather.dart';
 
 class HomeScreen extends StatefulWidget {
-  final List<dynamic> data;
-  const HomeScreen({super.key, required this.data,});
+  const HomeScreen({super.key,});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -79,11 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
       listen: false,
     );
     cityListProvider.changeCityatIndex(cityData, 0);
-    // WeatherDataProvider weatherDataProvider = Provider.of<WeatherDataProvider>(
-    //   context,
-    //   listen: false,
-    // );
-    // weatherDataProvider.changeCityDataAtIndex(data,0);
+    CityDataListProvider cityDataListProvider = Provider.of<CityDataListProvider>(
+      context,
+      listen: false,
+    );
+    cityDataListProvider.changeCityatIndex(data, 0);
     CityStorage().saveCityList(
         cityListProvider.cities.map((e) => "${e.lat}:${e.lon}").toList());
     CityStorage()
@@ -116,127 +113,113 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SafeArea(
               child: SingleChildScrollView(
                 child: Center(
-                  child: Consumer<CityListProvider>(
-                    builder: (context, cityProviderModel, child) => GestureDetector(
-                      onVerticalDragEnd: (details) {
-                        if (cityProviderModel.selectedIndex==0 &&details.primaryVelocity! > 50) {
-                          setState(() {
-                            showIndicator = true;
-                          });
-                          Future.delayed(const Duration(seconds: 1), () {
+                  child: Consumer<CityDataListProvider>(
+                    builder: (context, cityDataListProvider, child) => Consumer<CityListProvider>(
+                      builder: (context, cityProviderModel, child) => GestureDetector(
+                        onVerticalDragEnd: (details) {
+                          if (cityProviderModel.selectedIndex == 0 && details.primaryVelocity! > 50) {
                             setState(() {
-                              showIndicator = false;
+                              showIndicator = true;
                             });
-                          });
-                          getcurrentWeather(
-                              cityProviderModel
-                                  .cities[cityProviderModel.selectedIndex].lat
-                                  .toString(),
-                              cityProviderModel
-                                  .cities[cityProviderModel.selectedIndex].lon
-                                  .toString());
-                        }
-                      },
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.add),
-                                color: bgColordark2,
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ManageCityScreen()),
-                                  );
-                                },
-                              ),
-                              Text(cityProviderModel
-                                  .cities[cityProviderModel.selectedIndex].city!),
-                              IconButton(
-                                icon: const Icon(Icons.account_circle_outlined),
-                                color: bgColordark2,
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AccountSettingScreen()),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: ht - 75,
-                            child: Swiper(
-                              itemCount: cityProviderModel.cities.length,
-                              index: cityProviderModel.selectedIndex,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CityWeatherCard(data: widget.data,);
-                              },
-                              onIndexChanged: (index) {
-                                cityProviderModel.changeIndex(index);
-                                print(
-                                    "swiper:${index}, selected index:${cityProviderModel.selectedIndex}");
-                              },
-                              scrollDirection: Axis.horizontal,
-                              autoplay: false,
-                              loop: false,
-                              pagination: SwiperPagination(
-                                alignment: Alignment.topCenter,
-                                builder: SwiperCustomPagination(
-                                  builder: (BuildContext context,
-                                      SwiperPluginConfig config) {
-                                    return Container(
-                                      margin: const EdgeInsets.only(bottom: 20),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: List.generate(
-                                          config.itemCount,
-                                          (index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.all(5),
-                                              child: index == 0
-                                                  ? SvgPicture.asset(
-                                                      locationArrowIcon,
-                                                      colorFilter: ColorFilter.mode(
-                                                          cityProviderModel
-                                                                      .selectedIndex ==
-                                                                  index
-                                                              ? mainColor
-                                                              : Colors.grey,
-                                                          BlendMode.srcIn),
-                                                      width: 10,
-                                                    )
-                                                  : Container(
-                                                      margin:
-                                                          const EdgeInsets.all(3),
-                                                      width: 5,
-                                                      height: 5,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: cityProviderModel
-                                                                    .selectedIndex ==
-                                                                index
-                                                            ? mainColor
-                                                            : Colors.grey,
-                                                      ),
-                                                    ),
-                                            );
-                                          },
-                                        ),
-                                      ),
+                            Future.delayed(const Duration(seconds: 1), () {
+                              setState(() {
+                                showIndicator = false;
+                              });
+                            });
+                            getcurrentWeather(
+                                cityProviderModel.cities[cityProviderModel.selectedIndex].lat.toString(),
+                                cityProviderModel.cities[cityProviderModel.selectedIndex].lon.toString());
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.add),
+                                  color: bgColordark2,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const ManageCityScreen()),
                                     );
                                   },
                                 ),
+                                Text(cityProviderModel.cities[cityProviderModel.selectedIndex].city!),
+                                IconButton(
+                                  icon: const Icon(Icons.account_circle_outlined),
+                                  color: bgColordark2,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const AccountSettingScreen()),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: ht - 75,
+                              child: Swiper(
+                                itemCount: cityProviderModel.cities.length,
+                                index: cityProviderModel.selectedIndex,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return const CityWeatherCard();
+                                },
+                                onIndexChanged: (index) {
+                                  cityProviderModel.changeIndex(index);
+                                  print("swiper:${index}, selected index:${cityProviderModel.selectedIndex}");
+                                },
+                                scrollDirection: Axis.horizontal,
+                                autoplay: false,
+                                loop: false,
+                                pagination: SwiperPagination(
+                                  alignment: Alignment.topCenter,
+                                  builder: SwiperCustomPagination(
+                                    builder: (BuildContext context, SwiperPluginConfig config) {
+                                      return Container(
+                                        margin: const EdgeInsets.only(bottom: 20),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: List.generate(
+                                            config.itemCount,
+                                            (index) {
+                                              return Padding(
+                                                padding: const EdgeInsets.all(5),
+                                                child: index == 0
+                                                    ? SvgPicture.asset(
+                                                        locationArrowIcon,
+                                                        colorFilter: ColorFilter.mode(
+                                                            cityProviderModel.selectedIndex == index
+                                                                ? mainColor
+                                                                : Colors.grey,
+                                                            BlendMode.srcIn),
+                                                        width: 10,
+                                                      )
+                                                    : Container(
+                                                        margin: const EdgeInsets.all(3),
+                                                        width: 5,
+                                                        height: 5,
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          color: cityProviderModel.selectedIndex == index
+                                                              ? mainColor
+                                                              : Colors.grey,
+                                                        ),
+                                                      ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -249,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Center(
               child: Container(
                 height: 200,
-                width: wt-40,
+                width: wt - 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.grey.withOpacity(0.5),
@@ -258,12 +241,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Updating Data"),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 20),
                     CircularProgressIndicator(),
                   ],
-                )),
+                ),
               ),
             ),
+          ),
         ],
       ),
     );

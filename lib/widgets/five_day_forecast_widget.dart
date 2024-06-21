@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import 'package:weather_app/utlis/constants.dart';
 
 class FiveDayForecastWidget extends StatelessWidget {

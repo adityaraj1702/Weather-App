@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/account.dart';
+import 'package:weather_app/data/city_data_list_provider.dart';
 import 'package:weather_app/data/city_list.dart';
-import 'package:weather_app/model/userdata_modal.dart';
 import 'package:weather_app/screens/detailed_weather_screen.dart';
 import 'package:weather_app/utlis/colors.dart';
 
 class CityWeatherCard extends StatefulWidget {
-  final List<dynamic> data;
-  const CityWeatherCard({super.key, required this.data,});
+  const CityWeatherCard({super.key,});
 
   @override
   State<CityWeatherCard> createState() => _CityWeatherCardState();
@@ -36,7 +35,8 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
   Widget build(BuildContext context) {
     double ht = MediaQuery.of(context).size.height;
     double wt = MediaQuery.of(context).size.width;
-    return Consumer<CityListProvider>(
+    return Consumer<CityDataListProvider>(
+        builder: (context, cityDatalistProvider, child) => Consumer<CityListProvider>(
         builder: (context, citylist, child) => Container(
           margin: const EdgeInsets.all(20),
           child: Column(
@@ -63,7 +63,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
               Tooltip(
                 message: citylist.cities[citylist.selectedIndex].weatherCondition!,
                 child: Image.network(
-                  "https:${widget.data[citylist.selectedIndex]['current']['condition']['icon']}",
+                  "https:${cityDatalistProvider.cityDataList[citylist.selectedIndex]['current']['condition']['icon']}",
                   width: 64,
                   height: 64,
                   loadingBuilder:
@@ -113,7 +113,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                             tempUnit == "°C"
                                 ? "${citylist.cities[citylist.selectedIndex].feelslikeC!} °C"
                                 : "${citylist.cities[citylist.selectedIndex].feelslikeF!} °F",
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ],
                       ),
@@ -131,7 +131,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                           ),
                           Text(
                             "${citylist.cities[citylist.selectedIndex].humidity!} %",
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ],
                       ),
@@ -143,13 +143,16 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const Text(
-                            "Chance of rain",
-                            style: TextStyle(fontSize: 20),
+                          RichText(
+                            text: const TextSpan(
+                              text:"Chance of rain",
+                              style: TextStyle(fontSize: 20,color: Colors.black),
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                           Text(
                             "${citylist.cities[citylist.selectedIndex].chanceofrain!}%",
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ],
                       ),
@@ -169,7 +172,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                             windSpeedUnit == "kmph"
                                 ? "${citylist.cities[citylist.selectedIndex].windSpeedKph!} kmph"
                                 : "${citylist.cities[citylist.selectedIndex].windSpeedMph!} mph",
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ],
                       ),
@@ -178,7 +181,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                 ),
               ),
               Container(
-                width: wt-80,
+                width: wt - 80,
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -191,7 +194,7 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                       MaterialPageRoute(
                         builder: (context) => DetailedWeatherScreen(
                           cityIndex: citylist.selectedIndex,
-                          data: widget.data,
+                          data: cityDatalistProvider.cityDataList,
                         ),
                       ),
                     );
@@ -203,16 +206,19 @@ class _CityWeatherCardState extends State<CityWeatherCard> {
                         0.12), // Optional for some themes (removes color overlay)
                     shadowColor: Colors.transparent, // Transparent shadow
                   ),
-                  child: const Text(
-                    "Detailed Weather Forecast",
-                    style: TextStyle(fontSize: 20,
-                    color: Colors.black),
+                  child: const Center(
+                    child: Text(
+                      "Detailed Forecast",
+                      style: TextStyle(fontSize: 20,
+                      color: Colors.black),
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
+      ),
     );
   }
 }

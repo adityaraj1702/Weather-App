@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/data/city_data_list_provider.dart';
 import 'package:weather_app/data/city_list.dart';
 import 'package:weather_app/data/local_storage_city.dart';
 import 'package:weather_app/model/citydata_model.dart';
@@ -95,7 +96,11 @@ class _ManageCityScreenState extends State<ManageCityScreen> {
                           context,
                           listen: false,
                         ).addCity(newCity);
-                        print("added the new city");
+                        Provider.of<CityDataListProvider>(
+                          context,
+                          listen: false,
+                        ).addCity(data);
+                        print("added the new city to data");
                         CityStorage().saveCityList(Provider.of<CityListProvider>(
                           context,
                           listen: false,
@@ -159,6 +164,8 @@ class _ManageCityScreenState extends State<ManageCityScreen> {
                   if (selectedItemIndex != null) {
                     // Remove city from provider and data storage
                     Provider.of<CityListProvider>(context, listen: false)
+                        .removeCityAtIndex(selectedItemIndex!);
+                    Provider.of<CityDataListProvider>(context, listen: false)
                         .removeCityAtIndex(selectedItemIndex!);
                     CityStorage().saveCityList(Provider.of<CityListProvider>(
                       context,

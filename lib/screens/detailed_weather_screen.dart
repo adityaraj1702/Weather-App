@@ -104,7 +104,7 @@ class _DetailedWeatherScreenState extends State<DetailedWeatherScreen> {
                             tempUnit == "°C"
                                 ? "${widget.data[widget.cityIndex]['current']['temp_c']}°C"
                                 : "${widget.data[widget.cityIndex]['current']['temp_f']}°F",
-                            style: const TextStyle(fontSize: 70.0),
+                            style: const TextStyle(fontSize: 50.0),
                           ),
                           Column(
                             children: [
@@ -112,13 +112,13 @@ class _DetailedWeatherScreenState extends State<DetailedWeatherScreen> {
                                 children: [
                                   const Text(
                                     "Max : ",
-                                    style: TextStyle(fontSize: 20.0),
+                                    style: TextStyle(fontSize: 15.0),
                                   ),
                                   Text(
                                     tempUnit == "°C"
                                         ? "${widget.data[widget.cityIndex]['forecast']['forecastday'][0]['day']['maxtemp_c']}°C"
                                         : "${widget.data[widget.cityIndex]['forecast']['forecastday'][0]['day']['maxtemp_f']}°F",
-                                    style: const TextStyle(fontSize: 20.0),
+                                    style: const TextStyle(fontSize: 15.0),
                                   ),
                                 ],
                               ),
@@ -129,13 +129,13 @@ class _DetailedWeatherScreenState extends State<DetailedWeatherScreen> {
                                 children: [
                                   const Text(
                                     "Min : ",
-                                    style: TextStyle(fontSize: 20.0),
+                                    style: TextStyle(fontSize: 15.0),
                                   ),
                                   Text(
                                     tempUnit == "°C"
                                         ? "${widget.data[widget.cityIndex]['forecast']['forecastday'][0]['day']['mintemp_c']}°C"
                                         : "${widget.data[widget.cityIndex]['forecast']['forecastday'][0]['day']['mintemp_f']}°F",
-                                    style: const TextStyle(fontSize: 20.0),
+                                    style: const TextStyle(fontSize: 15.0),
                                   ),
                                 ],
                               ),
@@ -198,9 +198,9 @@ class _DetailedWeatherScreenState extends State<DetailedWeatherScreen> {
                             children: [
                               Text(
                                 "Air Quality",
-                                style: TextStyle(fontSize: 40),
+                                style: TextStyle(fontSize: 30),
                               ),
-                              Text(" (Forecasted Data)", style: TextStyle(fontSize: 20)),
+                              Text(" (Forecasted Data)", style: TextStyle(fontSize: 12)),
                             ],
                           ),
                           AqiWidget(

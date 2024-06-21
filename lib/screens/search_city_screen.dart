@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:weather_app/data/city_list.dart'; // Assuming this holds city data
 import 'package:weather_app/model/city_search_service.dart';
 
 class SearchCityScreen extends StatefulWidget {

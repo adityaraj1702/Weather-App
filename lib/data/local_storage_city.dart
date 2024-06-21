@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/model/citydata_model.dart';
 
 class CityStorage {
   static const _keyCityList = 'city_list';

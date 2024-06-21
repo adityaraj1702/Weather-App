@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/data/city_data_list_provider.dart';
 import 'package:weather_app/data/city_list.dart';
-import 'package:weather_app/screens/home_screen.dart';
 import 'package:weather_app/screens/splash_screen.dart';
 
 Future main() async {
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CityListProvider()),
+        ChangeNotifierProvider(create: (context) => CityDataListProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

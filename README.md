@@ -58,16 +58,9 @@ The project is organized with a well-defined directory structure for maintainabi
   - `utils`: Utility functions and constants.
 - `pubspec.yaml`: Defines project dependencies and configurations.
 
-## Bugs
-There are some bugs in the app that I have yet to fix.
-The bugs are as follows:
-  - The app sometimes crashes after adding a new city.
-  - The app does not show the weather data for the newly added city.
-For above bugs user needs to restart the app and the bugs will be fixed.
-
 ## Contributing
 
-We encourage contributions to this project! Feel free to submit pull requests with improvements or new features.
+I encourage contributions to this project! Feel free to submit pull requests with improvements or new features.
 
 ## License
 
